@@ -1,20 +1,55 @@
-// 给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在返回它将会被按顺序插入的位置
+/*
+35:搜索插入位置
+leetcodeID : 35
+leetcode地址 : https://leetcode-cn.com/problems/search-insert-position/
+难度 : 简单
 
+给定一个排序数组和一个目标值，在数组中找到目标值，并返回其索引。如果目标值不存在于数组中，返回它将会被按顺序插入的位置。
+
+你可以假设数组中无重复元素。
+
+示例 1:
+
+输入: [1,3,5,6], 5
+输出: 2
+
+
+示例 2:
+
+输入: [1,3,5,6], 2
+输出: 1
+
+
+示例 3:
+
+输入: [1,3,5,6], 7
+输出: 4
+
+
+示例 4:
+
+输入: [1,3,5,6], 0
+输出: 0
+
+
+ */
 package main
 
-import "fmt"
+import(
+    "fmt"
+)
 
-func main() {
+func main(){
     arr   := []int {1,3,4,5,6,7,9}
-    index := search_item(arr, 2)
+    index := searchInsert(arr, 2)
     fmt.Println(index)
 }
 
-func search_item(arr []int, target_num int) int {
+func searchInsert(nums []int, target int) int {
     i   := 0
-    len := len(arr)
+    len := len(nums)
     for {
-        if arr[i] >= target_num {
+        if nums[i] >= target {
             return i
         }
         i++

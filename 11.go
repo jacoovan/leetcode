@@ -1,30 +1,48 @@
-// 给定 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+/*
+11:盛最多水的容器
+leetcodeID : 11
+leetcode地址 : https://leetcode-cn.com/problems/container-with-most-water/
+难度 : 中等
 
-// 说明：你不能倾斜容器，且 n 的值至少为 2。
+给定 n 个非负整数 a<sub>1</sub>，a<sub>2，</sub>...，a<sub>n，</sub>每个数代表坐标中的一个点 (i, a<sub>i</sub>) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, a<sub>i</sub>) 和 (i, 0)。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
 
+说明：你不能倾斜容器，且 n 的值至少为 2。
+
+<img alt="" src="https://aliyun-lc-upload.oss-cn-hangzhou.aliyuncs.com/aliyun-lc-upload/uploads/2018/07/25/question_11.jpg" style="height: 287px; width: 600px;">
+
+<small>图中垂直线代表输入数组 [1,8,6,2,5,4,8,3,7]。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。</small>
+
+ 
+
+示例:
+
+输入: [1,8,6,2,5,4,8,3,7]
+输出: 49
+
+ */
 package main
 
-import (
+import(
     "fmt"
 )
 
-func main() {
-    nums := []float64 {1,8,6,2,5,4,8,3,7}
+func main(){
+    nums := []int {1,8,6,2,5,4,8,3,7}
 
     area := maxArea(nums)
 
     fmt.Println(area)
 }
 
-func maxArea(nums []float64) float64 {
-    len := len(nums)
+func maxArea(height []int) int {
+    len := len(height)
 
     if len < 2 {
         return 0
     }
 
-    var area float64
-    var tmpArea float64
+    var area int
+    var tmpArea int
     area, tmpArea = 0, 0
     i, j := 0, 1
     for {
@@ -39,12 +57,10 @@ func maxArea(nums []float64) float64 {
                 break
             }
 
-            tmpArea = float64(j - i) * min(nums[i], nums[j])
+            tmpArea = int(j - i) * min(height[i], height[j])
             if tmpArea > area {
                 area = tmpArea
             }
-
-            fmt.Println(i, j, nums[i], nums[j], tmpArea)
 
             j++
         }
@@ -55,7 +71,7 @@ func maxArea(nums []float64) float64 {
     return area
 }
 
-func min(i float64, j float64) float64 {
+func min(i int, j int) int {
     if i > j {
         return j
     }

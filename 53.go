@@ -1,29 +1,33 @@
-// 给定一个整数数组·nums·,找到一个具有最大和的联系子数组（子数组至少包含一个元素）,返回其最大和
+/*
+53:最大子序和
+leetcodeID : 53
+leetcode地址 : https://leetcode-cn.com/problems/maximum-subarray/
+难度 : 简单
 
+给定一个整数数组 nums ，找到一个具有最大和的连续子数组（子数组最少包含一个元素），返回其最大和。
+
+示例:
+
+输入: [-2,1,-3,4,-1,2,1,-5,4],
+输出: 6
+解释: 连续子数组 [4,-1,2,1] 的和最大，为 6。
+
+
+进阶:
+
+如果你已经实现复杂度为 O(n) 的解法，尝试使用更为精妙的分治法求解。
+
+ */
 package main
 
-import "fmt"
+import(
+    "fmt"
+)
 
-func main() {
-    nums := []int {1,4,7,8,2}
-    max  := get_maxsum(nums)
-    fmt.Println(max)
+func main(){
+    fmt.Println("请完成你的逻辑代码")
 }
 
-func get_maxsum(arr []int) int {
-    maxsum, sum := -1 << 31, -1 << 31
-    for _, num := range arr {
-        sum := max(sum + num, num)
-        maxsum = max(maxsum, sum)
-    }
-    maxsum = maxsum
-
-    return maxsum
-}
-
-func max(num1 int, num2 int) int {
-    if num1 < num2 {
-        return num2
-    }
-    return num1
+func maxSubArray(nums []int) int {
+    
 }
