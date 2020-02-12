@@ -48,7 +48,44 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    var tree1 *TreeNode
+    var tree2 *TreeNode
+
+    tree1 = & TreeNode{
+        Val   : 1,
+        Left  : nil,
+        Right : nil,
+    }
+    tree1.Left = & TreeNode{
+        Val   : 2,
+        Left  : nil,
+        Right : nil,
+    }
+    tree1.Right = & TreeNode{
+        Val   : 1,
+        Left  : nil,
+        Right : nil,
+    }
+
+    tree2 = & TreeNode{
+        Val   : 1,
+        Left  : nil,
+        Right : nil,
+    }
+    tree2.Left = & TreeNode{
+        Val   : 2,
+        Left  : nil,
+        Right : nil,
+    }
+    tree2.Right = & TreeNode{
+        Val   : 1,
+        Left  : nil,
+        Right : nil,
+    }
+
+    res := isSameTree(tree1, tree2)
+
+    fmt.Println(res)
 }
 
 /**
@@ -59,6 +96,38 @@ func main(){
  *     Right *TreeNode
  * }
  */
+
+type TreeNode struct {
+    Val    int
+    Left  *TreeNode
+    Right *TreeNode
+}
 func isSameTree(p *TreeNode, q *TreeNode) bool {
-    
+
+    if p.Val != q.Val {
+        return false
+    }
+
+    if p.Left != nil && q.Left != nil {
+        if isSameTree(p.Left, q.Left) == false {
+            return false
+        }
+    } else if p.Left == nil && q.Left != nil {
+        return false
+    } else if p.Left != nil && q.Left == nil {
+        return false
+    }
+
+    if p.Right != nil && q.Right != nil {
+        if isSameTree(p.Right, q.Right) == false {
+            return false
+        }
+    } else if p.Right == nil && q.Right != nil {
+        return false
+    } else if p.Right != nil && q.Right == nil {
+        return false
+    }
+
+
+    return true
 }

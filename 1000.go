@@ -47,9 +47,9 @@ leetcode地址 : https://leetcode-cn.com/problems/minimum-cost-to-merge-stones/
 提示：
 
 <ul>
-	1 <= stones.length <= 30
-	2 <= K <= 30
-	1 <= stones[i] <= 100
+    1 <= stones.length <= 30
+    2 <= K <= 30
+    1 <= stones[i] <= 100
 </ul>
 
  */
@@ -57,12 +57,98 @@ package main
 
 import(
     "fmt"
+    "math"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    stones := []int {3,2,4,1}
+    k      := 2
+
+    res := mergeStones(stones, k)
+
+    fmt.Println(res)
 }
 
 func mergeStones(stones []int, K int) int {
-    
+    lenOfstone := len(stones)
+
+    m1 := int(math.Floor(float64(lenOfstone - 1) / float64(K -1)))
+    m2 := int(math.Ceil(float64(lenOfstone - 1) / float64(K -1)))
+
+    if m1 != m2 {
+        return -1
+    }
+
+    res := 0
+    currentLen := lenOfstone
+    for {
+        if currentLen == 1 {
+            break
+        }
+
+        minSum := getMinSum(stones[:currentLen], K)
+        res    += minSum["sum"]
+
+        stones[minSum["i"]] = minSum["sum"]
+        if minSum["i"] + K < lenOfstone {
+            i := 1
+            for {
+                if minSum["i"] + K + i > lenOfstone {
+                    break
+                }
+
+                stones[minSum["i"] + i] = stones[minSum["i"] + K + i - 1]
+                i++
+            }
+        }
+        currentLen = currentLen - K + 1
+
+
+    }
+
+    return res
+}
+
+func getMinSum(nums []int, K int) map[string]int {
+    minSum := map[string]int {
+        "i" : -1,
+        "sum" : -1,
+    }
+    lenOfnums := len(nums)
+
+    for i, _ := range nums {
+        if i + K > lenOfnums {
+            break
+        }
+
+        tempSum := map[string]int {
+            "i"   : i,
+            "sum" : 0,
+        }
+        j := 0
+        for {
+            if j >= K {
+                break
+            }
+
+            tempSum["sum"] += nums[i + j]
+            j++
+        }
+
+        minSum = min(minSum, tempSum)
+    }
+
+    return minSum
+}
+
+func min(sum1 map[string]int, sum2 map[string]int) map[string]int {
+    if sum1["i"] == -1 {
+        return sum2
+    }
+
+    if sum1["sum"] < sum2["sum"] {
+        return sum1
+    }
+
+    return sum2
 }
