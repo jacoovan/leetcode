@@ -8,7 +8,7 @@ leetcode地址 : https://leetcode-cn.com/problems/3sum/
 
 注意：答案中不可以包含重复的三元组。
 
- 
+
 
 示例：
 
@@ -26,12 +26,47 @@ package main
 
 import(
     "fmt"
+    "sort"
+    "strconv"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {-1, 0, 1, 2, -1, -4}
+
+    res := threeSum(nums)
+
+    fmt.Println(res)
 }
 
 func threeSum(nums []int) [][]int {
-    
+    res, temp := [][]int {}, [][]int {}
+
+    // 取出数组中和为0的不同位置数字
+    for i := 0; i < len(nums); i++ {
+        for j := i + 1; j < len(nums); j++ {
+            for k := j + 1; k < len(nums); k++ {
+                if nums[i] + nums[j] + nums[k] == 0 {
+                    temp = append(temp, []int {nums[i], nums[j], nums[k]})
+                }
+            }
+        }
+    }
+
+    // 对相同数字组合进行去重
+    temp_map := map[string][]int {}
+    for _, v := range temp {
+        sort.Ints(v)
+        key := ""
+        for _, num := range v {
+            key += strconv.Itoa(num)
+        }
+        temp_map[key] = v
+    }
+
+    // 得到最终结果
+    for _, v := range temp_map {
+        res = append(res, v)
+    }
+
+    return res
 }
