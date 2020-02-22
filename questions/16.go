@@ -16,12 +16,35 @@ package main
 
 import(
     "fmt"
+    "math"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {-1, 2, 1, -4}
+    target := 1
+
+    res := threeSumClosest(nums, target)
+
+    fmt.Println(res)
 }
 
 func threeSumClosest(nums []int, target int) int {
-    
+    mininum := -1
+
+    for i := 0; i < len(nums) - 2; i++ {
+        for j := i + 1; j < len(nums) - 1; j++ {
+            for k := j + 1; k < len(nums); k++ {
+                sum := nums[i] + nums[j] + nums[k]
+                if mininum == -1 {
+                    mininum = sum
+                } else {
+                    if int(math.Abs(float64(sum - target))) < mininum {
+                        mininum = sum
+                    }
+                }
+            }
+        }
+    }
+
+    return mininum
 }

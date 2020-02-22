@@ -27,12 +27,52 @@ package main
 
 import(
     "fmt"
+    "sort"
+    "strconv"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {1, 0, -1, 0, -2, 2}
+    target := 0
+
+    res := fourSum(nums, target)
+
+    fmt.Println(res)
 }
 
 func fourSum(nums []int, target int) [][]int {
-    
+    lenOfNum := len(nums)
+
+    temp := [][]int {}
+    for i := 0; i < lenOfNum - 3; i++ {
+        for j := i + 1; j < lenOfNum - 2; j++ {
+            for k := j + 1; k < lenOfNum - 1; k++ {
+                for l := k + 1; l < lenOfNum; l++ {
+
+                    if nums[i] + nums[j] + nums[k] + nums[l] == target {
+                        temp = append(temp, []int {nums[i], nums[j], nums[k], nums[l]})
+                    }
+                }
+            }
+        }
+    }
+
+    tempMap := map[string][]int {}
+    for _, nums := range temp {
+        sort.Ints(nums)
+
+        key := ""
+        for _, v := range nums {
+            key += strconv.Itoa(v)
+        }
+
+        tempMap[key] = nums
+    }
+
+    res := [][]int {}
+    for _, v := range tempMap {
+        res = append(res, v)
+    }
+
+    return res
 }
