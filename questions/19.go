@@ -28,8 +28,43 @@ import(
     "fmt"
 )
 
+type ListNode struct {
+    Val int
+    Next *ListNode
+}
+
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+
+    head := &ListNode{
+        1,
+        nil,
+    }
+    head.Next = &ListNode{
+        2,
+        nil,
+    }
+    head.Next.Next = &ListNode{
+        3,
+        nil,
+    }
+    head.Next.Next.Next = &ListNode{
+        4,
+        nil,
+    }
+    head.Next.Next.Next.Next = &ListNode{
+        5,
+        nil,
+    }
+    n := 2
+    head = removeNthFromEnd(head, n)
+
+    for {
+        if head == nil {
+            break
+        }
+        fmt.Println(head)
+        head = head.Next
+    }
 }
 
 /**
@@ -40,5 +75,53 @@ func main(){
  * }
  */
 func removeNthFromEnd(head *ListNode, n int) *ListNode {
-    
+    var prevNode *ListNode
+    var deleteNode *ListNode
+    var nextNode *ListNode
+
+    index := 1
+    res := head
+    for {
+        if head == nil {
+            break
+        }
+
+        if index - n == -1 {
+            prevNode = res
+        }
+
+        if index - n == 0 {
+            deleteNode = res
+        }
+
+        if index - n == 1 {
+            nextNode = res
+        }
+
+        if head.Next != nil {
+           head = head.Next
+           index++
+           if prevNode != nil && index - n > -1 {
+                prevNode = prevNode.Next
+           }
+            if deleteNode != nil && index - n > 0 {
+                deleteNode = deleteNode.Next
+            }
+           if nextNode != nil && index - n > 1 {
+              nextNode = nextNode.Next
+           }
+        } else {
+           head = nil
+        }
+    }
+
+    if deleteNode != nil {
+        if nextNode == nil && prevNode != nil {
+            res = prevNode
+        } else if nextNode != nil {
+            nextNode.Next = prevNode
+        }
+    }
+
+    return res
 }
