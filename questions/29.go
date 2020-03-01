@@ -29,14 +29,38 @@ leetcode地址 : https://leetcode-cn.com/problems/divide-two-integers/
  */
 package main
 
-import(
+import (
     "fmt"
+    "math"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    dividend := 7
+    divisor := -3
+
+    res:= divide(dividend, divisor)
+
+    fmt.Println(res)
 }
 
 func divide(dividend int, divisor int) int {
-    
+    res := 0
+
+    beDiv, div := int(math.Abs(float64(dividend))), int(math.Abs(float64(divisor)))
+
+    isLessZero := false
+    if dividend + divisor < beDiv + div {
+        isLessZero = true
+    }
+
+    for beDiv - div > 0 {
+        beDiv = beDiv - div
+        res++
+    }
+
+    if isLessZero {
+        res = res * -1
+    }
+
+    return res
 }

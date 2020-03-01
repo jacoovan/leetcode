@@ -31,12 +31,42 @@ package main
 
 import(
     "fmt"
+    "strings"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    haystack := "aaaaa"
+    needle := "bba"
+
+    res := strStr(haystack, needle)
+
+    fmt.Println(res)
 }
 
 func strStr(haystack string, needle string) int {
-    
+    if len(needle) == 0 {
+        return 0
+    }
+
+    haystackArr := strings.Split(haystack, "")
+    needleArr := strings.Split(needle, "")
+
+    for i, _ := range haystackArr {
+        k := i
+        over := true
+
+        for _, v1 := range needleArr {
+            if v1 != haystackArr[k] {
+                over = false
+                break
+            }
+            k++
+        }
+
+        if over {
+            return i
+        }
+    }
+
+    return -1
 }
