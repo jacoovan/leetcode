@@ -34,12 +34,137 @@ package main
 
 import(
     "fmt"
+    "strings"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    s := "barfoothefoobarman"
+    words := []string {"foo", "bar"}
+
+    res := findSubstring(s, words)
+
+    fmt.Println(res)
+}
+
+type WordRes struct {
+    word string
+    warr []string
+    used bool
+    finished bool
+    index int
+    start int
 }
 
 func findSubstring(s string, words []string) []int {
-    
+    wMap := initWords(words)
+    res := []int {}
+
+    tempArr := strings.Split(s, "")
+
+    i := 0
+    tempPosition := 0
+    for {
+        position := tempPosition
+        sArr := tempArr
+
+        i++
+        if i == 100 {
+            return res
+        }
+        sArr, ok, position := getNext(sArr, wMap, position)
+        _ = sArr
+
+        if ok {
+            if isFinished(wMap) {
+                res = append(res, getStart(wMap))
+            }
+        } else {
+            wMap = initWords(words)
+        }
+
+
+        if len(sArr) == 0 {
+            return res
+        }
+        tempArr = sArr
+        tempPosition = position
+
+    }
+}
+
+func getStart(wMap map[string]WordRes) int {
+    res := -1
+
+    for _, wres := range wMap {
+        if res == -1 {
+            res = wres.start
+        } else if wres.start < res {
+            res = wres.start
+        }
+    }
+
+    return res
+}
+
+func isFinished(wMap map[string]WordRes) bool {
+    for _, wres := range wMap {
+        if wres.finished == false {
+            return false
+        }
+    }
+
+    return true
+}
+
+func getMatch(sArr []string, dArr []string) bool {
+    for index, v1 := range dArr {
+        if v1 != sArr[index] {
+            return false
+        }
+    }
+    return true
+}
+
+func getNext(sArr []string, wMap map[string]WordRes, position int) ([]string, bool, int) {
+    matched := false
+
+    for word, wres := range wMap {
+        if wres.used == false {
+            if sArr[0] == wres.warr[0] {
+                matched = getMatch(sArr, wres.warr)
+                wres.finished = true
+                wres.used = true
+                wres.start = position
+                wMap[word] = wres
+                index := len(wres.word)
+                sArr = sArr[index : ]
+                position = position + index
+                break
+            }
+        }
+    }
+
+    if matched == false && len(sArr) > 0 {
+        sArr = sArr[1:]
+        position++
+    }
+
+    return sArr, matched, position
+}
+
+func initWords(words []string) map[string]WordRes {
+    var res = map[string]WordRes {}
+
+    for _, word := range words {
+        res[word] = WordRes {
+            word,
+            strings.Split(word, ""),
+            false,
+            false,
+            0,
+            0,
+        }
+    }
+
+    return res
 }
