@@ -33,9 +33,84 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums   := []int {4,5,6,7,0,1,2}
+    target := 0
+
+    res := search(nums, target)
+
+    fmt.Println(res)
+
 }
 
 func search(nums []int, target int) int {
-    
+    low  := 0
+    mid  := int((len(nums) - 1) / 2)
+    high := len(nums) - 1
+
+    scroll := searchScroll(nums, low, mid, high)
+
+    low1  := 0
+    high1 := scroll - 1
+    res1 := binary_search(nums, target, low1, high1)
+    if res1 > -1 {
+        return res1
+    }
+
+    low2  := scroll
+    high2 := high
+    res2 := binary_search(nums, target, low2, high2)
+    if res2 > -1 {
+        return res2
+    }
+
+    return -1
+}
+
+func searchScroll(nums []int, low int, mid int, high int) int {
+    if high - low <= 2 {
+        if nums[low] < nums[high] {
+            return low
+        } else {
+            return high
+        }
+    }
+
+    if nums[low] > nums[mid] {
+        return searchScroll(nums, low, int((low + mid) / 2), mid)
+    } else {
+        return searchScroll(nums, mid, int((mid + high) / 2), high)
+    }
+
+}
+
+func binary_search(nums []int, target int, low int, high int) int {
+    if low >= high {
+        if nums[low] == target {
+            return low
+        } else {
+            return -1
+        }
+    }
+
+    if low == high - 1 {
+        if nums[low] == target {
+            return low
+        } else if nums[high] == target {
+            return high
+        } else {
+            return -1
+        }
+    }
+
+    mid := int((low + high) / 2)
+
+    if nums[low] > target {
+        return -1
+    } else if nums[low] <= target && nums[mid] >= target {
+        return binary_search(nums, target, low, mid)
+    } else if nums[mid] <= target && nums[high] >= target {
+        return binary_search(nums, target, mid, high)
+    } else {
+        return -1
+    }
 }
