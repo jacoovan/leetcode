@@ -25,12 +25,73 @@ package main
 
 import(
     "fmt"
+    "strings"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    s := ")()())"
+    res := longestValidParentheses(s)
+    fmt.Println(res)
 }
 
 func longestValidParentheses(s string) int {
-    
+    temp := map[int]map[int][]string {}
+    chars := strings.Split(s, "")
+    for i, char := range chars {
+        for k, v := range temp {
+            current := make([]string, len(v[len(v) - 1]))
+            copy(current, v[len(v) - 1])
+            current =  append(current, char)
+
+            temp[k][len(v)] = current
+        }
+        temp[i] = map[int][]string {0 : {char}}
+    }
+
+    longest := 0
+    for k, v := range temp {
+        for k1, v1 := range v {
+            ret := isValid(v1)
+            if !ret {
+               delete(temp[k], k1)
+               continue
+            }
+
+            if len(v1) > longest {
+                fmt.Println(v1, len(v1))
+                longest = len(v1)
+            }
+        }
+    }
+
+    return longest
+}
+
+func isValid(chars []string) bool {
+    temp := []string {}
+
+    for _, char := range chars {
+        if len(temp) == 0 && char == ")" {
+            return false
+        }
+
+        if char == "(" {
+            temp = append(temp, char)
+            continue
+        }
+
+        if char == ")" && temp[len(temp) - 1] != "(" {
+            return false
+        }
+
+        if char == ")" && temp[len(temp) - 1] == "(" {
+            temp = temp[:len(temp) - 1]
+        }
+    }
+
+    if len(temp) > 0 {
+        return false
+    }
+
+    return true
 }
