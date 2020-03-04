@@ -58,7 +58,6 @@ func longestValidParentheses(s string) int {
             }
 
             if len(v1) > longest {
-                fmt.Println(v1, len(v1))
                 longest = len(v1)
             }
         }
