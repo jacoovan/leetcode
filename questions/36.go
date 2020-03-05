@@ -70,9 +70,87 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    board := [][]byte {
+        {'5','3','.','.','7','.','.','.','.'},
+        {'6','.','.','1','9','5','.','.','.'},
+        {'.','9','8','.','.','.','.','6','.'},
+        {'8','.','.','.','6','.','.','.','3'},
+        {'4','.','.','8','.','3','.','.','1'},
+        {'7','.','.','.','2','.','.','.','6'},
+        {'.','6','.','.','.','.','2','8','.'},
+        {'.','.','.','4','1','9','.','.','5'},
+        {'.','.','.','.','8','.','.','7','9'},
+    }
+
+    res := isValidSudoku(board)
+
+    fmt.Println(res)
 }
 
 func isValidSudoku(board [][]byte) bool {
-    
+    for _, row := range board {
+        res := rowOrcolUnique(row)
+        if !res {
+            return false
+        }
+    }
+
+    for i := 0; i < len(board[0]); i++ {
+        col := []byte {}
+        for _, row := range board {
+            col = append(col, row[i])
+        }
+
+        res := rowOrcolUnique(col)
+
+        if !res {
+            return false
+        }
+    }
+
+    for i := 0; i < len(board) - 3; i=i+3 {
+        for j := 0; j < len(board[0]) - 3; j=j+3 {
+            boardChunk := make([][]byte, 3)
+            copy(boardChunk, board[i:i+3])
+            for i, v := range boardChunk {
+                boardChunk[i] = v[j:j+3]
+            }
+
+            res := boardUnique(boardChunk)
+            if !res {
+                return false
+            }
+        }
+    }
+    return true
+}
+
+func rowOrcolUnique(row []byte) bool {
+    temp := map[byte]bool {}
+
+    for _, v := range row {
+        _, ok := temp[v]
+        if !ok {
+            temp[v] = true
+        } else if v != '.' {
+            return false
+        }
+    }
+    return true
+}
+
+func boardUnique(board [][]byte) bool {
+    temp := map[byte]bool {}
+
+    for _, row := range board {
+        for _, v := range row {
+            _, ok := temp[v]
+            if !ok {
+                temp[v] = true
+            } else if v != '.' {
+                return false
+            }
+        }
+    }
+    return true
 }

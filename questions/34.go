@@ -23,14 +23,30 @@ leetcode地址 : https://leetcode-cn.com/problems/find-first-and-last-position-o
  */
 package main
 
-import(
-    "fmt"
-)
+import "fmt"
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {5,7,7,8,8,10}
+    target := 6
+    res := searchRange(nums, target)
+
+    fmt.Println(res)
 }
 
 func searchRange(nums []int, target int) []int {
-    
+    res := []int {-1, -1}
+    first := true
+
+    for i, v := range nums {
+        if v == target {
+            if first {
+                res[0] = i
+                first = false
+            }
+
+            res[1] = i
+        }
+    }
+
+    return res
 }
