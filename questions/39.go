@@ -38,14 +38,98 @@ candidates 中的数字可以无限制重复被选取。
  */
 package main
 
-import(
+import (
     "fmt"
+    "math"
+    "sort"
+    "strconv"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {1,3,5}
+    target := 9
+
+    res := combinationSum(nums, target)
+    fmt.Println(res)
 }
 
 func combinationSum(candidates []int, target int) [][]int {
-    
+    answer := getAnswer(candidates, target)
+
+    uniqueAnswer := answerUnique(answer)
+
+    return uniqueAnswer
+}
+
+func answerUnique(answer [][]int) [][]int {
+    unique := map[string][]int {}
+
+    for _, v := range answer {
+        sort.Ints(v)
+        key := ""
+        for _, num := range v {
+            key += strconv.Itoa(num)
+        }
+
+        _, ok := unique[key]
+        if !ok {
+            unique[key] = v
+        }
+    }
+
+    res := [][]int {}
+    for _, v := range unique {
+        res = append(res, v)
+    }
+
+    return res
+}
+
+func getAnswer(candidates []int, target int) [][]int {
+    res := [][]int {}
+
+    for i, num := range candidates {
+        size := int(math.Floor(float64(target) / float64(num)))
+        for j := 1; j <= size; j++ {
+            tempNums := make([]int, i)
+            copy(tempNums, candidates[:i])
+            if i < size {
+                tempNums = append(tempNums, candidates[i+1:]...)
+            }
+
+            current := []int {}
+            for k := 0; k < j; k++ {
+                current = append(current, num)
+            }
+
+
+            if target - num * j == 0 {
+                res = append(res, current)
+            }
+            if target - num * j > 0 {
+                res1 := combinationSum(tempNums, target - num * j)
+
+                for k, row := range res1 {
+                    sum := 0
+                    for _, v := range row {
+                        sum += v
+                    }
+
+                    for _, v := range current {
+                        sum += v
+                    }
+
+                    if sum == target {
+                        res1[k] = append(current, res1[k]...)
+                    }
+                }
+
+                res = append(res, res1...)
+            }
+
+
+        }
+    }
+
+    return res
 }
