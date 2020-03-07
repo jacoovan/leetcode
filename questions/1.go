@@ -30,27 +30,12 @@ func main(){
 }
 
 func twoSum(nums []int, target int) []int {
-    var arrmap map[int]int
-    arrmap =  make(map[int]int)
-    length := len(nums)
-    i      := 0
-    for {
-        if i >= length {
-            break
-        }
-        if nums[i] != target {
-            arrmap[i] = nums[i]
-        }
-
-        for j, num := range arrmap {
-            if i != j && num + nums[i] == target {
-                return []int {
-                    num,
-                    nums[i],
-                }
+    for i := 0; i < len(nums) - 1; i++ {
+        for j := i; j < len(nums); j++ {
+            if nums[i] + nums[j] == target {
+                return []int {i, j}
             }
         }
-        i++
     }
 
     return []int {-1, -1}
