@@ -47,9 +47,95 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    num := 2
+    lessonRequire := [][]int {
+        {1,0},
+        {0,1},
+    }
+    res := canFinish(num, lessonRequire)
+    fmt.Println(res)
+}
+
+type graphNode struct {
+    prev *graphNode
+    next []*graphNode
+    val int
 }
 
 func canFinish(numCourses int, prerequisites [][]int) bool {
-    
+    graphLesson := graphNode{}
+    for _, v := range prerequisites {
+        if !conflictLesson(v, &graphLesson) {
+            insertLesson(v, &graphLesson)
+        } else {
+            return false
+        }
+    }
+
+    return true
+}
+
+func conflictLesson(v []int, currentNode *graphNode) bool {
+    if currentNode.prev == nil && currentNode.next == nil {
+        return false
+    }
+
+    if currentNode.next == nil {
+        return false
+    }
+
+    childLesson := v[0]
+    if currentNode.val == childLesson {
+        childNode := currentNode.next
+
+        ret := checkChildExist(v, childNode)
+        if ret {
+            return true
+        }
+    }
+
+    return false
+}
+
+func checkChildExist(v []int, childNodes []*graphNode) bool {
+    if childNodes == nil {
+        return false
+    }
+
+    parentLesson := v[1]
+
+    for _, childNode := range childNodes {
+        if childNode.val == parentLesson {
+            return true
+        }
+        return checkChildExist(v, childNode.next)
+    }
+
+    return false
+}
+
+func insertLesson(v []int, root * graphNode) {
+    childLesson := v[0]
+    parentLesson := v[1]
+    nextNode := graphNode{
+        nil,
+        nil,
+        childLesson,
+    }
+
+    if root.prev == nil {
+        root.val = parentLesson
+    }
+
+    if root.val == parentLesson && root.next == nil {
+        nextNode.prev = root
+        root.next = append(root.next, &nextNode)
+        return
+    } else if root.next != nil {
+        for _, currentNode := range root.next {
+            insertLesson(v, currentNode)
+        }
+    } else {
+        return
+    }
 }
