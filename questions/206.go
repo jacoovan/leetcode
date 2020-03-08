@@ -22,7 +22,59 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    root := &ListNode{
+        1,
+        nil,
+    }
+
+    root.Next = &ListNode{
+        2,
+        nil,
+    }
+
+    root.Next.Next = &ListNode{
+        3,
+        nil,
+    }
+
+    root.Next.Next.Next = &ListNode{
+        4,
+        nil,
+    }
+
+    root.Next.Next.Next.Next = &ListNode{
+        5,
+        nil,
+    }
+    fmt.Println("before")
+    fmt.Println(root)
+    tmp := root
+    for {
+        if tmp.Next != nil {
+            tmp = tmp.Next
+            fmt.Println(tmp)
+        } else {
+            break
+        }
+    }
+
+    fmt.Println("after")
+    root = reverseList(root)
+    fmt.Println(root)
+    tmp = root
+    for {
+       if tmp.Next != nil {
+           tmp = tmp.Next
+           fmt.Println(tmp)
+       } else {
+           break
+       }
+    }
+}
+
+type ListNode struct {
+    Val int
+    Next *ListNode
 }
 
 /**
@@ -33,5 +85,35 @@ func main(){
  * }
  */
 func reverseList(head *ListNode) *ListNode {
-    
+    temp := head
+    tail := &ListNode{}
+    for {
+        current := temp
+        if current.Next == nil {
+            tail = current
+            break
+        }
+        temp = current.Next
+    }
+    if head.Next == nil {
+        return head
+    }
+    reverseNode(head, head.Next)
+    head.Next.Next = head
+    head.Next = nil
+    return tail
+}
+
+func reverseNode(prev *ListNode, current *ListNode) {
+    if current.Next == nil {
+        return
+    }
+
+    prev = current
+    current = current.Next
+    reverseNode(prev, current)
+
+    next := current.Next
+    current.Next = prev
+    prev.Next = next
 }
