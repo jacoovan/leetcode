@@ -36,9 +36,73 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {3,4,-1,1}
+    fmt.Println(nums)
+    res := firstMissingPositive(nums)
+    fmt.Println(nums, res)
+    fmt.Println("")
+
+    nums = []int {0, 2, 1, 3}
+    fmt.Println(nums)
+    res = firstMissingPositive(nums)
+    fmt.Println(nums, res)
+    fmt.Println("")
+
+    nums = []int {0, 1, 2}
+    fmt.Println(nums)
+    res = firstMissingPositive(nums)
+    fmt.Println(nums, res)
+    fmt.Println("")
+
+    nums = []int {7,8,9,11,12}
+    fmt.Println(nums)
+    res = firstMissingPositive(nums)
+    fmt.Println(nums, res)
+    fmt.Println("")
 }
 
 func firstMissingPositive(nums []int) int {
-    
+    tackleNums(nums)
+    res := getFirstNum(nums)
+    return res
+}
+
+func getFirstNum(nums []int) int {
+    if len(nums) == 0 {
+        return 1
+    }
+
+    if len(nums) == 1 && nums[0] != 1 {
+        return 1
+    }
+
+    if nums[0] == 1 {
+        return 1
+    }
+
+    for i, v := range nums {
+        if i != v {
+            return i
+        }
+    }
+
+    return len(nums)
+}
+
+func tackleNums(nums []int) {
+    for i, v := range nums {
+        if v > len(nums) - 1 || v < 0 {
+            nums[i] = 0
+        }
+    }
+
+    for i, v := range nums {
+        temp := nums[v]
+        if temp > 0 {
+            if temp < v || v <= 0 {
+                nums[v] = v
+                nums[i] = temp
+            }
+        }
+    }
 }
