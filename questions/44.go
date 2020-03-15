@@ -66,6 +66,7 @@ package main
 
 import(
     "fmt"
+    "strings"
 )
 
 func main(){
@@ -73,5 +74,62 @@ func main(){
 }
 
 func isMatch(s string, p string) bool {
-    
+    // 排除法做题目
+
+    hasStar := hasStar(p)
+    hasQ    := hasQ(p)
+
+    if !hasQ && !hasStar {
+        if len(s) != len(p) {
+            return false
+        }
+
+        for _, s1 := range s {
+            for _, p1 := range p {
+                if s1 != p1 {
+                    return false
+                }
+            }
+        }
+    }
+
+    if hasQ && !hasStar {
+        if len(s) != len(p) {
+            return false
+        }
+
+        for _, s1 := range s {
+            for _, p1 := range p {
+                if s1 != p1 && p1 != '?' {
+                    return false
+                }
+            }
+        }
+    }
+
+    if hasStar {
+        temp := strings.ReplaceAll(p, "*", "")
+        if len(temp) > len(s) {
+            return false
+        }
+
+        if len(temp) == 0 {
+            return true
+        }
+
+        static, exist := getStatic(p)
+        if exist {
+            possibles := getPossible(p, static)
+
+            for _, possible := range possibles {
+                temp = s
+                temp = replaceFromIndex(s, possible)
+                if len(temp) > 0 {
+                    return false
+                }
+            }
+        }
+    }
+
+    return true
 }
