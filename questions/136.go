@@ -29,9 +29,19 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {2, 2, 1}
+
+    res := singleNumber(nums)
+
+    fmt.Println(res)
 }
 
 func singleNumber(nums []int) int {
-    
+    res := 0
+
+    for _, v := range nums {
+        res = res ^ v
+    }
+
+    return res
 }
