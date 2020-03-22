@@ -26,14 +26,22 @@ leetcode地址 : https://leetcode-cn.com/problems/power-of-two/
  */
 package main
 
-import(
-    "fmt"
-)
+import "fmt"
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    num := 4
+
+    res := isPowerOfTwo(num)
+
+    fmt.Println(res)
 }
 
 func isPowerOfTwo(n int) bool {
-    
+    count := 0
+    for n != 0 {
+        count++
+        n &= n - 1
+    }
+
+    return count == 1
 }

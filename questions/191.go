@@ -50,9 +50,20 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    var num uint32 = 7
+
+    res := hammingWeight(num)
+
+    fmt.Println(res)
 }
 
 func hammingWeight(num uint32) int {
-    
+    count := 0
+
+    for num != 0 {
+        num &= num - 1
+        count++
+    }
+
+    return count
 }

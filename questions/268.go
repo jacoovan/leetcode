@@ -29,9 +29,21 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {3,0,1}
+
+    res := missingNumber(nums)
+
+    fmt.Println(res)
 }
 
 func missingNumber(nums []int) int {
-    
+    res := 0
+
+    for i, v := range nums {
+        res ^= i ^ v
+    }
+
+    res ^= len(nums)
+
+    return res
 }
