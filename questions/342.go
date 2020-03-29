@@ -23,14 +23,35 @@ leetcode地址 : https://leetcode-cn.com/problems/power-of-four/
  */
 package main
 
-import(
+import (
     "fmt"
+    "math"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    num := math.Pow(4.0, 1.0)
+
+
+    res := isPowerOfFour(int(num))
+
+    fmt.Println(res)
 }
 
 func isPowerOfFour(num int) bool {
-    
+    num = 1
+
+    for num != 0 {
+        tempNum := num >> 2
+        if tempNum << 2 != num {
+            return false
+        }
+
+        num = tempNum
+
+        if num == 1 {
+            return true
+        }
+    }
+
+    return false
 }

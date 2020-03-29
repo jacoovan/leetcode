@@ -25,9 +25,18 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    a := 3
+    b := 6
+
+    res := getSum(a, b)
+
+    fmt.Println(res)
 }
 
 func getSum(a int, b int) int {
-    
+    for a != 0 {
+        a, b = (a & b) << 1, a ^ b
+    }
+
+    return b
 }
