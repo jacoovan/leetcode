@@ -21,12 +21,76 @@ package main
 
 import(
     "fmt"
+    "math"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    n := 16
+
+    mat := generateMatrix(n)
+
+    printMat(mat)
 }
 
 func generateMatrix(n int) [][]int {
-    
+    sqrt := int(math.Ceil(math.Sqrt(float64(n))))
+    mat := [][]int {}
+    for i := 1; i <= sqrt; i++ {
+        line := []int {}
+        for j := 1; j <= sqrt; j++ {
+            line = append(line, 0)
+        }
+        mat = append(mat, line)
+    }
+
+    times := 0
+    num := 1
+    for k := 1; k <= sqrt; k++ {
+        fmt.Println("times", times)
+        row, col := times, times
+        end := sqrt - times - 1
+        for ; col <= end; col++ {
+            mat[row][col] = num
+            num++
+            if num > n {return mat}
+        }
+        printMat(mat)
+
+       if sqrt - times == 2 {
+           break
+       }
+        row, col = times + 1, sqrt - times - 1
+        end = sqrt - times - 1
+        for ; row <= end; row++ {
+            mat[row][col] = num
+            num++
+            if num > n {return mat}
+        }
+        printMat(mat)
+
+        row, col = sqrt - times - 1, sqrt - times - 2
+        for ; col >= times; col-- {
+            mat[row][col] = num
+            num++
+            if num > n {return mat}
+        }
+        printMat(mat)
+
+        row, col = sqrt - times - 2, times
+        for ; row >= times + 1; row-- {
+            mat[row][col] = num
+            num++
+            if num > n {return mat}
+        }
+        printMat(mat)
+        times++
+    }
+    return mat
+}
+
+func printMat(mat [][]int) {
+    fmt.Println("")
+    for i := 0; i <= len(mat) - 1; i++ {
+        fmt.Println(mat[i])
+    }
 }

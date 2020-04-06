@@ -28,9 +28,31 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    str := "hello world"
+
+    length := lengthOfLastWord(str)
+
+    fmt.Println(length)
 }
 
 func lengthOfLastWord(s string) int {
-    
+    length := 0
+    first := true
+    for i := len(s) - 1; i >= 0; i-- {
+        if first && s[i] != ' ' {
+            length = 1
+            first = false
+            continue
+        }
+
+        if !first && s[i] == ' ' {
+            break
+        }
+
+        if s[i] != ' ' {
+            length++
+        }
+    }
+
+    return length
 }
