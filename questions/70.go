@@ -31,14 +31,31 @@ leetcode地址 : https://leetcode-cn.com/problems/climbing-stairs/
  */
 package main
 
-import(
-    "fmt"
-)
+import "fmt"
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    n := 5
+
+    res := climbStairs(n)
+
+    fmt.Println(res)
 }
 
 func climbStairs(n int) int {
-    
+    if n == 1 {
+        return 1
+    }
+
+    if n == 2 {
+        return 2
+    }
+
+    var n1Result, n2Result = 2, 1
+    for i := 3; i < n; i++ {
+        temp := n1Result
+        n1Result = n1Result + n2Result
+        n2Result = temp
+    }
+
+    return n1Result + n2Result
 }

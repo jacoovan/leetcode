@@ -55,12 +55,53 @@ package main
 
 import(
     "fmt"
+    "strings"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    path := "/a//b////c/d//././/.."
+
+    res := simplifyPath(path)
+
+    fmt.Println(res)
 }
 
 func simplifyPath(path string) string {
-    
+    paths := []string {}
+
+    for i := len(path)-1; i >= 0 ; i-- {
+        if path[i] != '/' {
+            break
+        }
+
+        if i > 0 {
+            path = path[:i-1]
+        } else {
+            path = ""
+        }
+    }
+
+    path = path + "/"
+
+    current := ""
+    for _, v := range path {
+        if v == '/' {
+            if current == "." {
+                paths = paths
+            } else if current == ".." {
+                if len(paths) > 0 {
+                    paths = paths[:len(paths)-1]
+                }
+            } else if current != "" {
+                paths = append(paths, current)
+            }
+            current = ""
+        } else {
+            current += string(v)
+        }
+    }
+
+    path = "/" + strings.Join(paths, "/")
+
+    return path
 }
