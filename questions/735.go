@@ -63,12 +63,48 @@ package main
 
 import(
     "fmt"
+    "math"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    planets := []int {5, 10, -5}
+
+    res := asteroidCollision(planets)
+
+    fmt.Println(res)
 }
 
 func asteroidCollision(asteroids []int) []int {
-    
+    stack := []int {}
+
+    for _, v := range asteroids {
+		stack = append(stack, v)
+
+    	for {
+    		if len(stack) < 2 {
+    			break
+    		}
+    		
+    		end := stack[len(stack) - 1]
+    		prev := stack[len(stack) - 2]
+
+    		if abs(end + prev) < abs(end) + abs(prev) && end < 0 {
+    			if abs(end) > abs(prev) {
+    				stack = append(stack[:len(stack) - 2], stack[len(stack) - 1])
+    			} else if abs(end) == abs(prev) {
+    				stack = stack[:len(stack) - 2]
+    			} else {
+    				stack = stack[:len(stack) - 1]
+    			}
+    		} else {
+    			break
+    		}
+    	}
+    }
+
+    return stack
+}
+
+func abs(n int) int {
+	return int(math.Abs(float64(n)))
 }
