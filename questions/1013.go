@@ -47,9 +47,41 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {0,2,1,-6,6,-7,9,1,2,0,1}
+    // nums := []int {0,2,1,-6,6,7,9,-1,2,0,1}
+    // nums := []int {3,3,6,5,-2,2,5,1,-9,4}
+
+    res := canThreePartsEqualSum(nums)
+
+    fmt.Println(res)
 }
 
 func canThreePartsEqualSum(A []int) bool {
-    
+    sum := 0
+    for _, num := range A {
+        sum += num
+    }
+
+    avg := int(sum / 3)
+
+    start, end := 0, 0
+    for i, j := 0, len(A) - 1; i < j;  {
+        if start != avg || i == 0 {
+            start += A[i]
+            i++
+        }
+
+        if end != avg || j == len(A) - 1 {
+            end += A[j]
+            j--
+        }
+
+
+
+        if start == avg && end == avg && i > 0 && j < len(A) - 1 {
+            return true
+        }
+    }
+
+    return false
 }

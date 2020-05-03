@@ -52,9 +52,57 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    n := 10
+
+    res := bitwiseComplement(n)
+
+    fmt.Println(res)
 }
 
 func bitwiseComplement(N int) int {
-    
+    res := genBinary(N)
+
+    reverseBinary := []int {}
+    for _, num := range res {
+        temp := 0
+        if num == 0 {
+            temp = 1
+        }
+        reverseBinary = append(reverseBinary, temp)
+    }
+
+    num := 0
+    temp := 1
+    for i := len(reverseBinary) - 1; i >= 0; i-- {
+        num += temp * reverseBinary[i]
+        temp = 2 * temp
+    }
+
+    return num
+}
+
+func genBinary(n int) []int {
+	if n == 0 {
+		return []int {0}
+	}
+
+	binary := []int {}
+	for {
+			if n == 1 {
+				binary = append(binary, 1)
+				break
+			}
+			tmp := n % 2
+			binary = append(binary, tmp)
+			n = n - tmp
+
+			n = int(n / 2)
+	}
+
+	res := []int {}
+	for i := len(binary) - 1; i >= 0; i = i-1 {
+		res = append(res, binary[i])
+	}
+
+	return res
 }
