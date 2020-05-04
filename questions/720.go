@@ -41,12 +41,74 @@ package main
 
 import(
     "fmt"
+    "sort"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    //words := []string {"w","wo","wor","worl", "world"}
+    words := []string {"a", "banana", "app", "appl", "ap", "apply", "apple"}
+
+    res := longestWord(words)
+
+    fmt.Println(res)
 }
 
 func longestWord(words []string) string {
-    
+    sorts := map[int][]string {}
+    temp := map[int]int {}
+
+    for _, word := range words {
+        sorts[len(word)] = []string {}
+        temp[len(word)] = len(word)
+    }
+
+    lengths := []int {}
+    for _, v := range temp {
+        lengths = append(lengths, v)
+    }
+    sort.Ints(lengths)
+
+    for _, word := range words {
+        sorts[len(word)] = append(sorts[len(word)], word)
+    }
+
+    prev := false
+    prevWords := []string {}
+    prevLength := 0
+    for _, length := range lengths {
+        if !prev {
+            prevWords = sorts[length]
+            prev = true
+            prevLength = length
+            continue
+        }
+
+        res := []string {}
+        for _, word := range sorts[length] {
+            for _, prevWord := range prevWords {
+                if word[prevLength - 1] != prevWord[prevLength - 1] {
+                    continue
+                }
+
+                res = append(res, word)
+            }
+        }
+
+        if len(res) == 0 {
+            break
+        }
+
+        prevWords = res
+    }
+
+    max := 'z'
+    res := ""
+    for _, prevWord := range prevWords {
+        if rune(prevWord[len(prevWord)-1]) <= max {
+            max = rune(prevWord[len(prevWord)-1])
+            res = prevWord
+        }
+    }
+
+    return res
 }
