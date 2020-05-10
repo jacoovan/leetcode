@@ -45,9 +45,33 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    childs  := []int {1,2}
+    cookies := []int {1,2}
+
+    res := findContentChildren(childs, cookies)
+
+    fmt.Println(res)
 }
 
 func findContentChildren(g []int, s []int) int {
-    
+    ate := []int {}
+
+    for _, gi := range g {
+        for j, sj := range s {
+            if gi == sj && !inArray(j, ate) {
+                ate = append(ate, j)
+            }
+        }
+    }
+
+    return len(ate)
+}
+
+func inArray(n int, nums []int) bool {
+    for _, n1 := range nums {
+        if n == n1  {
+            return true
+        }
+    }
+    return false
 }

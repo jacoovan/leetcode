@@ -65,9 +65,61 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    bills := []int {5,5,15}
+
+    res := lemonadeChange(bills)
+
+    fmt.Println(res)
 }
 
 func lemonadeChange(bills []int) bool {
-    
+    singlePrice := 5
+    moneys := []int {}
+
+    for _, money := range bills {
+        if money == singlePrice {
+            moneys = append(moneys, money)
+            continue
+        }
+
+
+        if money > singlePrice {
+            currentMoney := money
+            for {
+                ok := false
+                maxMoney := 0
+                for i := len(moneys) - 1; i >= 0; i-- {
+                    if moneys[i] < currentMoney {
+                        maxMoney = moneys[i]
+                        ok = true
+                        if i < len(moneys) - 1 {
+                            moneys = append(moneys[:i], moneys[i+1:]...)
+                        } else {
+                            moneys = moneys[:i]
+                        }
+                        break
+                    }
+                }
+                if !ok {
+                    return false
+                }
+
+                if currentMoney - maxMoney == singlePrice {
+                    moneys = append(moneys, money)
+                    for i := len(moneys) - 1; i >= 1; i-- {
+                        if moneys[i] > moneys[i-1] {
+                            temp := moneys[i]
+                            moneys[i] = moneys[i-1]
+                            moneys[i-1] = temp
+                        }
+                    }
+                    break
+                }
+
+                currentMoney -= maxMoney
+            }
+        }
+    }
+
+    return true
 }

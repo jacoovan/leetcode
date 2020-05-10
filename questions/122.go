@@ -41,9 +41,24 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    //profits := []int {7,1,5,3,6,4}
+    //profits := []int {1,2,3,4,5}
+    profits := []int {7,6,4,3,1}
+
+    res := maxProfit(profits)
+
+    fmt.Println(res)
 }
 
 func maxProfit(prices []int) int {
-    
+    length := len(prices)
+
+    res := 0
+    for i := 0; i < length - 1; i++ {
+        if prices[i] < prices[i+1] {
+            res += prices[i+1] - prices[i]
+        }
+    }
+
+    return res
 }
