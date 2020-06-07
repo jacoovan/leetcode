@@ -39,9 +39,50 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    x := 2.0
+    n := -2
+    res := myPow(x, n)
+    fmt.Println(res)
 }
 
 func myPow(x float64, n int) float64 {
-    
+    temp := x
+
+    var n1 int
+    if n > 0 {
+    	n1 = n
+    } else {
+    	n1 = n * -1
+    }
+
+    if n1 == 0 {
+    	return 1
+    } else if n1 == 1 {
+    	if n < 0 {
+	    	return 1 / temp
+	    }
+    	return x
+    }
+    for n1 > 1 {
+    	i := n1 % 2
+    	if i == 1 {
+    		temp = float64(i) * temp
+    		n1 = n1 - 1
+    	}
+
+    	switch i {
+    	case 1:
+    		temp = float64(i) * temp
+    		n1 = n1 - 1
+    	default :
+    		n1 = int(float64(n1) / 2)
+    		temp = temp * temp
+    	}
+    }
+
+    if n < 0 {
+    	return 1 / temp
+    }
+
+    return temp
 }

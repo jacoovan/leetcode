@@ -33,9 +33,36 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    prices := []int {7,6,4,3,1}
+
+    res := maxProfit(prices)
+
+    fmt.Println(res)
 }
 
 func maxProfit(prices []int) int {
-    
+	if len(prices) == 0 {
+		return 0
+	}
+
+	var minBuy = prices[0]
+	var maxP = []int {}
+    for _, v := range prices {
+		maxP = append(maxP, v - minBuy)
+
+    	if v < minBuy {
+    		minBuy = v
+    	}
+    }
+
+    fmt.Println(maxP)
+
+    var max = maxP[0]
+    for _, v := range maxP {
+    	if v > max {
+    		max = v
+    	}
+    }
+
+    return max
 }

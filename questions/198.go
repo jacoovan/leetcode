@@ -31,9 +31,49 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {1,2,3,1}
+
+    res := rob(nums)
+
+    fmt.Println(res)
 }
 
 func rob(nums []int) int {
-    
+	if len(nums) == 0 {
+		return 0
+	}
+
+	if len(nums) == 1 {
+		return nums[0]
+	}
+
+	if len(nums) == 2 {
+		if nums[0] < nums[1] {
+			return nums[1]
+		}
+		return nums[0]
+	}
+
+    dp := []int {}
+    for k, v := range nums {
+    	if k == 0 {
+    		dp = append(dp, nums[0])
+    		continue
+    	}
+    	if k == 1 {
+    		if nums[0] > nums[1] {
+    			dp = append(dp, nums[0])
+    		} else {
+    			dp = append(dp, nums[1])
+    		}
+    		continue
+    	}
+    	if dp[k-1] > dp[k-2] + v {
+    		dp = append(dp, dp[k-1])
+    	} else {
+    		dp = append(dp, dp[k-2]+v)
+    	}
+    }
+
+    return dp[len(nums)-1]
 }
