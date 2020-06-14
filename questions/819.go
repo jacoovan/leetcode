@@ -42,12 +42,71 @@ package main
 
 import(
     "fmt"
+    "strings"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    paragraph := "Bob hit a ball, the hit BALL flew far after it was hit."
+    banned := []string{"hit"}
+    res := mostCommonWord(paragraph, banned)
+    fmt.Println("res:", res)
 }
 
 func mostCommonWord(paragraph string, banned []string) string {
-    
+    words := getWords(paragraph)
+
+    times := make(map[string]int)
+    for _, word := range words {
+    	key := strings.ToLower(word)
+    	_, ok := times[key]
+    	if !ok {
+    		times[key] = 1
+    	} else {
+    		times[key] = times[key] + 1
+    	}
+    }
+
+    for _, banWord := range banned {
+    	_, ok := times[banWord]
+    	if ok {
+    		delete(times, banWord)
+    	}
+    }
+
+    maxWord := ""
+    maxTime := 0
+    for key, time := range times {
+    	if time > maxTime {
+    		maxTime = time
+    		maxWord = key
+    	}
+    }
+
+    return maxWord
+}
+
+func getWords(paragraph string) []string {
+	words := []string{}
+    currentLetters := []rune{}
+    for _, v := range paragraph {
+    	if !isLetter(v) {
+    		if len(currentLetters) > 0 {
+    			words = append(words, string(currentLetters))
+    		}
+    		currentLetters = []rune{}
+    		continue
+    	}
+    	currentLetters = append(currentLetters, v)
+    }
+    return words
+}
+
+func isLetter(v rune) bool {
+	if v >= rune('A') && v <= rune('Z') {
+		return true
+	}
+	if v >= rune('a') && v <= rune('z') {
+		return true
+	}
+	return false
 }

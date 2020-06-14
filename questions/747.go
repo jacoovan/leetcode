@@ -44,9 +44,34 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    nums := []int {3, 6, 1, 0}
+    res := dominantIndex(nums)
+    fmt.Println(res)
 }
 
 func dominantIndex(nums []int) int {
-    
+    max := 0
+    secondmax := 0
+
+    var index int
+
+    for i, num := range nums {
+    	if num > max {
+    		secondmax = max
+    		max = num
+    		index = i
+    		continue
+    	}
+
+    	if num > secondmax {
+    		secondmax = num
+    		continue
+    	}
+    }
+
+    if max < secondmax * 2 {
+    	return -1
+    }
+
+    return index
 }
