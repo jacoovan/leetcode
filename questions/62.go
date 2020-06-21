@@ -40,9 +40,25 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    m, n := 7, 3
+    res := uniquePaths(m, n)
+    fmt.Println(res)
 }
 
 func uniquePaths(m int, n int) int {
-    
+	if m == 1 && n == 1 {
+		return 0
+	}
+	if m == 1 {
+		return 1
+	}
+	if n == 1 {
+		return 1
+	}
+
+	counts := 0
+    counts = counts + uniquePaths(m-1, n)
+    counts = counts + uniquePaths(m, n-1)
+
+    return counts
 }
