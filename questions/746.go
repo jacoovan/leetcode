@@ -41,9 +41,35 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    cost := []int{0, 0, 1, 1}
+    res := minCostClimbingStairs(cost)
+    fmt.Println(res)
 }
 
 func minCostClimbingStairs(cost []int) int {
-    
+	if len(cost) == 0 {
+		return 0
+	}
+	if len(cost) == 1 {
+		return cost[0]
+	}
+	if len(cost) == 2 {
+		return min(cost[0], cost[1])
+	}
+	if len(cost) == 3 {
+		return min(cost[1], cost[0]+cost[2])
+	}
+
+
+	return min(
+		cost[len(cost)-1] + minCostClimbingStairs(cost[:len(cost)-1]),
+		cost[len(cost)-2] + minCostClimbingStairs(cost[:len(cost)-2]),
+	)
+}
+
+func min(a int, b int) int {
+	if a > b {
+		return b
+	}
+	return a
 }
