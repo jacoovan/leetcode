@@ -22,14 +22,44 @@ leetcode地址 : https://leetcode-cn.com/problems/letter-combinations-of-a-phone
  */
 package main
 
-import(
+import (
     "fmt"
 )
-
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    digits := "**"
+    res := letterCombinations(digits)
+    fmt.Println(res, len(res))
 }
 
 func letterCombinations(digits string) []string {
-    
+    res := []string{}
+    numLetterMap := map[rune][]string {
+        '2': {"a", "b", "c"},
+        '3': {"d", "e", "f"},
+        '4': {"g", "h", "i"},
+        '5': {"j", "k", "l"},
+        '6': {"m", "n", "o"},
+        '7': {"p", "q", "r", "s"},
+        '8': {"t", "u", "v"},
+        '9': {"w", "x", "y", "z"},
+    }
+    for _, s := range digits {
+        letters, _ := numLetterMap[s]
+        if len(res) == 0 {
+            for _, letter := range letters {
+                res = append(res, letter)
+            }
+            continue
+        }
+
+        temp := []string{}
+        for _, word := range res {
+            for _, letter := range letters {
+                temp = append(temp, word+letter)
+            }
+        }
+        res = temp
+    }
+    return res
 }
+
