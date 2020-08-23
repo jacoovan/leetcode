@@ -69,14 +69,75 @@ maxWidth = 20
  */
 package main
 
-import(
+import (
     "fmt"
+    "math"
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    words := []string{"This", "is", "an", "example", "of", "text", "justification."}
+    maxWidth := 16
+    res := fullJustify(words, maxWidth)
+    for i, p := range res {
+        fmt.Println(i, "p:", "|"+p+"|", len(p))
+    }
 }
 
 func fullJustify(words []string, maxWidth int) []string {
-    
+    totalLength := 0
+    for _, word := range words {
+        totalLength += len(word)
+    }
+
+    respWords := [][]string{}
+    tempWords  := []string{}
+    tempLength := 0
+    for _, word := range words {
+        wordLength := len(word)
+        if tempLength + wordLength > maxWidth {
+            respWords = append(respWords, tempWords)
+            tempWords  = []string{word}
+            tempLength = len(word)
+            continue
+        }
+        tempLength += wordLength + 1
+        tempWords  = append(tempWords, word)
+    }
+    respWords = append(respWords, tempWords)
+
+    resp := []string{}
+    for _, words := range respWords {
+        totalWordsLength := 0
+        for _, word := range words {
+            totalWordsLength += len(word)
+        }
+        minWhiteSpaces := ""
+        firstExtraWhiteSpaces := ""
+        if len(words) > 1 {
+            var minWhiteSpacesLength int = int(math.Floor(float64((maxWidth - totalWordsLength) / (len(words) - 1))))
+            var firstExtraWhiteSpacesLength int = maxWidth - totalWordsLength - minWhiteSpacesLength * len(words)
+            for i := 0; i < minWhiteSpacesLength; i++ {
+                minWhiteSpaces += " "
+            }
+            for i := 0; i < minWhiteSpacesLength + firstExtraWhiteSpacesLength; i++ {
+                firstExtraWhiteSpaces += " "
+            }
+        } else {
+            for i := 0; i < maxWidth - totalWordsLength; i++ {
+                firstExtraWhiteSpaces += " "
+            }
+        }
+
+        temp := ""
+        for i := len(words) - 1; i >= 0; i-- {
+            if i == 0 {
+                temp = words[0] + firstExtraWhiteSpaces + temp
+                resp = append(resp, temp)
+                temp = ""
+                continue
+            }
+            temp = minWhiteSpaces + words[i] + temp
+        }
+    }
+    return resp
 }
