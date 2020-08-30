@@ -26,9 +26,69 @@ import(
 )
 
 func main(){
-    fmt.Println("请完成你的逻辑代码")
+    s := "ADOBECODEBANC"
+    t := "ABC"
+    res := minWindow(s, t)
+    fmt.Println("res:", res)
 }
 
 func minWindow(s string, t string) string {
-    
+    positions := []int{}
+    for i, char := range s {
+        for _, needle := range t {
+            if char == needle {
+                positions = append(positions, i)
+            }
+        }
+    }
+
+    tempTMap := make(map[int]bool)
+    for i, _ := range t {
+        tempTMap[i] = true
+    }
+
+    windows := make([][]rune, 0)
+    for _, start := range positions {
+        tempTMap := make(map[int]bool)
+        for i, _ := range t {
+            tempTMap[i] = true
+        }
+        window := make([]rune, 0)
+        for _, char := range s[start:] {
+            window = append(window, char)
+            var tempFlag = false
+            for j, needle := range t {
+                if char == needle {
+                    tempTMap[j] = false
+                }
+                var tempFlag1 = false
+                for _, flag := range tempTMap {
+                    if flag {
+                        tempFlag1 = true
+                        break
+                    }
+                }
+                tempFlag = tempFlag1
+                if !tempFlag {
+                    break
+                }
+            }
+            if !tempFlag {
+                windows = append(windows, window)
+                break
+            }
+        }
+    }
+
+    if len(windows) == 0 {
+        return ""
+    }
+    minWindowIndex := 0
+    for windowIndex, window := range windows {
+        if len(window) < len(windows[minWindowIndex]) {
+            minWindowIndex = windowIndex
+        }
+    }
+    minWindowSlice := windows[minWindowIndex]
+    return string(minWindowSlice)
 }
