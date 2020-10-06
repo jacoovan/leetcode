@@ -23,17 +23,42 @@ leetcode地址 : https://leetcode-cn.com/problems/subsets/
   []
 ]
 
- */
+*/
 package main
 
-import(
-    "fmt"
+import (
+	"fmt"
 )
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	nums := []int{1, 2, 3, 4}
+	res := subsets(nums)
+	fmt.Println("res:", res)
 }
 
 func subsets(nums []int) [][]int {
-    
+	res := make([][]int, 0)
+
+	var generate func(pos int, length int, item []int)
+	generate = func(pos int, length int, item []int) {
+
+		if len(item) == length {
+			tmp := make([]int, len(item))
+			copy(tmp, item)
+			res = append(res, tmp)
+			return
+		}
+		for i := pos; i < len(nums); i++ {
+			item = append(item, nums[i])
+			generate(i+1, length, item)
+			item = item[:len(item)-1]
+		}
+	}
+
+	for length := 1; length <= len(nums); length++ {
+		item := make([]int, 0, length)
+		generate(0, length, item)
+	}
+
+	return res
 }
