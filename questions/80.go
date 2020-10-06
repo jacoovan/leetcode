@@ -35,24 +35,65 @@ leetcode地址 : https://leetcode-cn.com/problems/remove-duplicates-from-sorted-
 
 // nums 是以&ldquo;引用&rdquo;方式传递的。也就是说，不对实参做任何拷贝
 int len = removeDuplicates(nums);
-
+gb
 // 在函数里修改输入数组对于调用者是可见的。
 // 根据你的函数返回的长度, 它会打印出数组中该长度范围内的所有元素。
 for (int i = 0; i < len; i++) {
     print(nums[i]);
 }
 
- */
+*/
 package main
 
-import(
-    "fmt"
+import (
+	"fmt"
 )
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	nums := []int{0, 0, 1, 1, 1, 1, 2, 3, 3}
+	// nums := []int{1, 1, 1, 2, 2, 3}
+	res := removeDuplicates(nums)
+	fmt.Println("res:", res)
 }
 
 func removeDuplicates(nums []int) int {
-    
+	var flag = -1
+	var times = 0
+	var length = 0
+	for i, num := range nums {
+		if num != flag {
+			flag = num
+			times = 1
+			continue
+		}
+		times++
+
+		if times == 3 {
+			times = 1
+			pos := 0
+			for j := i; j < len(nums); j++ {
+				if nums[j] > flag {
+					pos = j
+					break
+				}
+			}
+			var temp int
+			for j := pos; j < len(nums); j++ {
+				temp = nums[j]
+				nums[j] = nums[i+(j-pos)]
+				nums[i+(j-pos)] = temp
+			}
+			flag = nums[i]
+			continue
+		}
+	}
+	var prev = nums[0]
+	for _, num := range nums {
+		if prev <= num {
+			prev = num
+			length++
+		}
+	}
+	fmt.Println("nums:", nums)
+	return length
 }
