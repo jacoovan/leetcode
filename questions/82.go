@@ -17,15 +17,41 @@ leetcode地址 : https://leetcode-cn.com/problems/remove-duplicates-from-sorted-
 输入: 1->1->1->2->3
 输出: 2->3
 
- */
+*/
 package main
 
-import(
-    "fmt"
-)
+import "fmt"
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	tree := &ListNode{
+		Val: 1,
+		Next: &ListNode{
+			Val: 1,
+			Next: &ListNode{
+				Val: 1,
+				Next: &ListNode{
+					Val: 3,
+					Next: &ListNode{
+						Val: 4,
+						Next: &ListNode{
+							Val: 4,
+							Next: &ListNode{
+								Val:  5,
+								Next: nil,
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	res := deleteDuplicates(tree)
+	temp := res
+	for temp != nil {
+		fmt.Println("temp:", temp)
+		temp = temp.Next
+	}
 }
 
 /**
@@ -35,6 +61,74 @@ func main(){
  *     Next *ListNode
  * }
  */
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
 func deleteDuplicates(head *ListNode) *ListNode {
-    
+	if head == nil {
+		return nil
+	}
+	lastNode := &ListNode{}
+	lastNode = nil
+	firstNode := head
+	secondNode := head.Next
+	if secondNode == nil {
+		return head
+	}
+	duplicate := false
+	for {
+		if secondNode == nil {
+			break
+		}
+		if firstNode.Val != secondNode.Val {
+			if duplicate {
+				lastNode = secondNode
+			} else {
+				lastNode = firstNode
+			}
+			break
+		}
+		duplicate = true
+		firstNode = secondNode
+		secondNode = firstNode.Next
+	}
+	head = lastNode
+
+	for {
+		if secondNode == nil {
+			break
+		}
+		if firstNode.Val != secondNode.Val {
+			lastNode = firstNode
+			firstNode = secondNode
+			secondNode = firstNode.Next
+			continue
+		}
+		for {
+			if secondNode == nil {
+				break
+			}
+			firstNode = secondNode
+			secondNode = firstNode.Next
+			if secondNode == nil {
+				lastNode.Next = nil
+				break
+			}
+			if firstNode.Val == secondNode.Val {
+				firstNode = secondNode
+				secondNode = firstNode.Next
+				continue
+			}
+			if secondNode.Next == nil {
+				lastNode.Next = secondNode
+				break
+			}
+			firstNode = secondNode
+			secondNode = firstNode.Next
+		}
+	}
+	return head
 }
