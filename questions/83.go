@@ -17,15 +17,31 @@ leetcode地址 : https://leetcode-cn.com/problems/remove-duplicates-from-sorted-
 输入: 1->1->2->3->3
 输出: 1->2->3
 
- */
+*/
 package main
 
-import(
-    "fmt"
+import (
+	"fmt"
 )
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	list := &ListNode{
+		Val: 1,
+		Next: &ListNode{
+			Val: 1,
+			Next: &ListNode{
+				Val:  2,
+				Next: nil,
+			},
+		},
+	}
+
+	list = deleteDuplicates(list)
+	fmt.Println("val:", list.Val)
+	for list.Next != nil {
+		list = list.Next
+		fmt.Println("val:", list.Val)
+	}
 }
 
 /**
@@ -35,6 +51,33 @@ func main(){
  *     Next *ListNode
  * }
  */
+
+type ListNode struct {
+	Val  int
+	Next *ListNode
+}
+
 func deleteDuplicates(head *ListNode) *ListNode {
-    
+	var prevNode *ListNode = nil
+	var currentNode *ListNode = head
+	var nextNode *ListNode = head.Next
+
+	_ = prevNode
+
+	for nextNode != nil {
+		currentValue := currentNode.Val
+		nextValue := nextNode.Val
+
+		if nextValue != currentValue {
+			prevNode = currentNode
+			currentNode = nextNode
+			nextNode = nextNode.Next
+			continue
+		}
+
+		prevNode = currentNode
+		currentNode.Next = nextNode.Next
+		nextNode = nextNode.Next
+	}
+	return head
 }
