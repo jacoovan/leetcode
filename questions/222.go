@@ -12,7 +12,7 @@ leetcode地址 : https://leetcode-cn.com/problems/count-complete-tree-nodes/
 
 示例:
 
-输入: 
+输入:
     1
    / \
   2   3
@@ -21,15 +21,18 @@ leetcode地址 : https://leetcode-cn.com/problems/count-complete-tree-nodes/
 
 输出: 6
 
- */
+*/
 package main
 
-import(
-    "fmt"
+import (
+	"fmt"
 )
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	// 两种方法
+	// 1. 自顶向下，循环法
+	// 2. 自底向上，回溯法
+	fmt.Println("请完成你的逻辑代码")
 }
 
 /**
@@ -41,5 +44,5 @@ func main(){
  * }
  */
 func countNodes(root *TreeNode) int {
-    
+
 }
