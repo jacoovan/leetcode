@@ -12,7 +12,7 @@ leetcode地址 : https://leetcode-cn.com/problems/score-of-parentheses/
 	(A) 得 2 * A 分，其中 A 是平衡括号字符串。
 </ul>
 
- 
+
 
 示例 1：
 
@@ -38,7 +38,7 @@ leetcode地址 : https://leetcode-cn.com/problems/score-of-parentheses/
 输出： 6
 
 
- 
+
 
 提示：
 
@@ -47,17 +47,49 @@ leetcode地址 : https://leetcode-cn.com/problems/score-of-parentheses/
 	2 <= S.length <= 50
 
 
- */
+*/
 package main
 
-import(
-    "fmt"
+import (
+	"fmt"
 )
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	s := `(()(()))`
+	res := scoreOfParentheses(s)
+	fmt.Println("res:", res)
 }
 
 func scoreOfParentheses(S string) int {
-    
+	return scoreOfSub(S)
+}
+
+func scoreOfSub(s string) int {
+	score := 0
+	if len(s) < 2 {
+		return 0
+	}
+	for i, v := range s[:len(s)-1] {
+		if v == '(' && s[i+1] == '(' {
+			score = score
+			score = score + 2*scoreOfSub(s[i+1:])
+			return score
+		}
+		if v == '(' && s[i+1] == ')' {
+			score = score + 1
+			score = score + scoreOfSub(s[i+1:])
+			return score
+		}
+		if v == ')' && s[i+1] == '(' {
+			score = score
+			score = score + scoreOfSub(s[i+1:])
+			return score
+		}
+		if v == ')' && s[i+1] == ')' {
+			score = score + 0
+			score = score + scoreOfSub(s[i+1:])
+			return score
+		}
+	}
+	return score
 }
