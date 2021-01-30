@@ -35,17 +35,99 @@ leetcode地址 : https://leetcode-cn.com/problems/ones-and-zeroes/
 解释: 你可以拼出 "10"，但之后就没有剩余数字了。更好的选择是拼出 "0" 和 "1" 。
 
 
- */
+*/
 package main
 
-import(
-    "fmt"
-)
+import "fmt"
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	// strs := []string{"10", "0", "1"}
+	// m := 1
+	// n := 1
+
+	strs := []string{"10", "0001", "111001", "1", "0"}
+	m := 5
+	n := 3
+
+	res := findMaxForm(strs, m, n)
+
+	fmt.Println("res:", res)
 }
 
 func findMaxForm(strs []string, m int, n int) int {
-    
+	tempList := make([]*SortObject, 0)
+	for i := range strs {
+		tempList = append(tempList, NewSortObject(&strs[i]))
+	}
+	sortFast(&tempList)
+
+	count := 0
+	for _, object := range tempList {
+		for _, c := range *object.origin {
+			if c == '0' {
+				m = m - 1
+			} else {
+				n = n - 1
+			}
+			if m < 0 || n < 0 {
+				return count
+			}
+		}
+		count = count + 1
+
+	}
+	return count
+}
+
+func sortFast(objectsPtr *[]*SortObject) {
+	if len(*objectsPtr) == 0 {
+		return
+	}
+	originObjects := *objectsPtr
+	smaller := make([]*SortObject, 0)
+	bigger := make([]*SortObject, 0)
+	flag := originObjects[0]
+	for _, object := range originObjects[1:] {
+		if object.Len() >= flag.Len() {
+			bigger = append(bigger, object)
+		} else {
+			smaller = append(smaller, object)
+		}
+	}
+
+	if len(bigger) > 1 {
+		sortFast(&bigger)
+	}
+	if len(smaller) > 1 {
+		sortFast(&smaller)
+	}
+
+	index := 0
+	for _, small := range smaller {
+		originObjects[index] = small
+		index = index + 1
+	}
+	originObjects[index] = flag
+	index = index + 1
+	for _, big := range bigger {
+		originObjects[index] = big
+		index = index + 1
+	}
+	return
+}
+
+type SortObject struct {
+	length int
+	origin *string
+}
+
+func NewSortObject(strPtr *string) *SortObject {
+	return &SortObject{
+		length: len(*strPtr),
+		origin: strPtr,
+	}
+}
+
+func (s *SortObject) Len() int {
+	return s.length
 }
