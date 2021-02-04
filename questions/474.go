@@ -41,13 +41,13 @@ package main
 import "fmt"
 
 func main() {
-	// strs := []string{"10", "0", "1"}
-	// m := 1
-	// n := 1
+	strs := []string{"10", "0", "1"}
+	m := 1
+	n := 1
 
-	strs := []string{"10", "0001", "111001", "1", "0"}
-	m := 5
-	n := 3
+	// strs := []string{"10", "0001", "111001", "1", "0"}
+	// m := 5
+	// n := 3
 
 	res := findMaxForm(strs, m, n)
 
@@ -63,18 +63,31 @@ func findMaxForm(strs []string, m int, n int) int {
 
 	count := 0
 	for _, object := range tempList {
+		isBreak := false
+		tempM := m
+		tempN := n
 		for _, c := range *object.origin {
 			if c == '0' {
-				m = m - 1
-			} else {
-				n = n - 1
+				tempM = tempM - 1
+				if tempM < 0 {
+					isBreak = true
+					break
+				}
 			}
-			if m < 0 || n < 0 {
-				return count
+
+			if c == '1' {
+				tempN = tempN - 1
+				if tempN < 0 {
+					isBreak = true
+					break
+				}
 			}
 		}
-		count = count + 1
-
+		if !isBreak {
+			count = count + 1
+			m = tempM
+			n = tempN
+		}
 	}
 	return count
 }
