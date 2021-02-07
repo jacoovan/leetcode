@@ -31,19 +31,98 @@ leetcode地址 : https://leetcode-cn.com/problems/magical-string/
 解释：神奇字符串 S 的前 6 个元素是 &ldquo;12211&rdquo;，它包含三个 1，因此返回 3。
 
 
- 
 
- */
+
+*/
 package main
 
-import(
-    "fmt"
+import (
+	"fmt"
 )
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	n := 10000
+	res := magicalString(n)
+	fmt.Println("res:", res)
 }
 
 func magicalString(n int) int {
-    
+	nums := generateMagicalNums(n)
+	var count int
+	for i := 0; i < n; i++ {
+		if nums[i] == 1 {
+			count = count + 1
+		}
+	}
+	return count
+}
+
+func generateMagicalNums(n int) []int {
+	if n == 0 {
+		return []int{}
+	}
+
+	nums := make([]int, 0)
+	for i := 0; i < n; i++ {
+		nums = appendMagicalNums(nums)
+	}
+
+	return nums
+}
+
+func appendMagicalNums(nums []int) []int {
+	var targetNums []int
+	targetNums = append(nums, []int{1}...)
+	if compareNums(targetNums) {
+		return append(nums, 1)
+	}
+	targetNums = append(nums, []int{1, 1}...)
+	if compareNums(targetNums) {
+		return append(nums, 1)
+	}
+	targetNums = append(nums, []int{1, 2}...)
+	if compareNums(targetNums) {
+		return append(nums, 1)
+	}
+
+	targetNums = append(nums, []int{2}...)
+	if compareNums(targetNums) {
+		return append(nums, 2)
+	}
+	targetNums = append(nums, []int{2, 1}...)
+	if compareNums(targetNums) {
+		return append(nums, 2)
+	}
+	targetNums = append(nums, []int{2, 2}...)
+	if compareNums(targetNums) {
+		return append(nums, 2)
+	}
+	return nums
+}
+
+func compareNums(nums []int) bool {
+	calcNums := make([]int, 0)
+	// 在这里优化
+
+	var count int = 1
+	var length int = len(nums)
+	for i := 0; i < length-1; i++ {
+		if nums[i] == nums[i+1] {
+			count = count + 1
+		} else {
+			calcNums = append(calcNums, count)
+			count = 1
+		}
+	}
+
+	calcNums = append(calcNums, count)
+
+	compared := true
+	for i := 0; i < len(calcNums); i++ {
+		if calcNums[i] != nums[i] {
+			compared = false
+			break
+		}
+	}
+	return compared
 }
