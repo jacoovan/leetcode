@@ -36,17 +36,40 @@ leetcode地址 : https://leetcode-cn.com/problems/predict-the-winner/
 	如果最终两个玩家的分数相等，那么玩家1仍为赢家。
 
 
- */
+*/
 package main
 
-import(
-    "fmt"
+import (
+	"fmt"
 )
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	// nums := []int{0, 0, 7, 6, 5, 6, 1}
+	nums := []int{1, 5, 2}
+	res := PredictTheWinner(nums)
+	fmt.Println("res:", res)
 }
 
 func PredictTheWinner(nums []int) bool {
-    
+	if len(nums)/2 == 0 {
+		return true
+	}
+
+	length := len(nums)
+	mat := make([][]int, length)
+	for i := 0; i < len(nums); i++ {
+		mat[i] = make([]int, length)
+		mat[i][i] = nums[i]
+	}
+
+	for i := length - 2; i >= 0; i-- {
+		for j := i + 1; j < length; j++ {
+			if (nums[i] - mat[i+1][j]) > (nums[j] - mat[i][j-1]) {
+				mat[i][j] = nums[i] - mat[i+1][j]
+			} else {
+				mat[i][j] = nums[j] - mat[i][j-1]
+			}
+		}
+	}
+	return mat[0][length-1] > 0
 }
