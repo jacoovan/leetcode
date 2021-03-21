@@ -33,17 +33,79 @@ leetcode地址 : https://leetcode-cn.com/problems/matchsticks-to-square/
 	火柴数组的长度不超过15。
 
 
- */
+*/
 package main
 
-import(
-    "fmt"
+import (
+	"fmt"
+	"sort"
 )
 
-func main(){
-    fmt.Println("请完成你的逻辑代码")
+func main() {
+	// nums := []int{1, 1, 2, 2, 2}
+	nums := []int{3, 3, 3, 3, 4}
+	res := makesquare(nums)
+	fmt.Println("res:", res)
 }
 
 func makesquare(nums []int) bool {
-    
+	totalNum := 0
+	for _, num := range nums {
+		totalNum += num
+	}
+
+	tempSideLength := float64(totalNum) / float64(4)
+	sideLength := int(tempSideLength)
+	for _, num := range nums {
+		if num > sideLength {
+			return false
+		}
+	}
+
+	sortNums := sort.IntSlice(nums)
+	alreadyUsedMap := make(map[int]bool)
+	for i := 0; i < 4; i++ {
+		indexes := getSide(sortNums, sideLength, alreadyUsedMap)
+		if len(indexes) == 0 {
+			return false
+		}
+		for _, index := range indexes {
+			alreadyUsedMap[index] = true
+		}
+	}
+	return true
+}
+
+func getSide(nums []int, sideLength int, alreadyUsedMap map[int]bool) []int {
+	indexes := make([]int, 0)
+
+	var tempSide int
+	for i, smaller := range nums {
+		_, ok := alreadyUsedMap[i]
+		if ok {
+			continue
+		}
+		tempSide += smaller
+		indexes = append(indexes, i)
+		if tempSide == sideLength {
+			return indexes
+		}
+
+		for j := len(nums) - 1; j > i; j-- {
+			larger := nums[j]
+			if tempSide+larger == sideLength {
+				tempSide += larger
+				indexes = append(indexes, j)
+				return indexes
+			}
+			if tempSide+larger < sideLength {
+				tempSide += larger
+				indexes = append(indexes, j)
+			}
+		}
+	}
+	if tempSide != sideLength {
+		return []int{}
+	}
+	return indexes
 }
