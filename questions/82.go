@@ -32,11 +32,11 @@ func main() {
 				Next: &ListNode{
 					Val: 3,
 					Next: &ListNode{
-						Val: 4,
+						Val: 3,
 						Next: &ListNode{
 							Val: 4,
 							Next: &ListNode{
-								Val:  5,
+								Val:  4,
 								Next: nil,
 							},
 						},
@@ -47,10 +47,17 @@ func main() {
 	}
 
 	res := deleteDuplicates(tree)
+	if res == nil {
+		fmt.Println("res:", res)
+		return
+	}
+
 	temp := res
+	index := 1
 	for temp != nil {
-		fmt.Println("temp:", temp)
+		fmt.Printf("res%d:%v", index, temp)
 		temp = temp.Next
+		index++
 	}
 }
 
@@ -71,64 +78,69 @@ func deleteDuplicates(head *ListNode) *ListNode {
 	if head == nil {
 		return nil
 	}
-	lastNode := &ListNode{}
-	lastNode = nil
-	firstNode := head
-	secondNode := head.Next
-	if secondNode == nil {
-		return head
-	}
-	duplicate := false
-	for {
-		if secondNode == nil {
-			break
-		}
-		if firstNode.Val != secondNode.Val {
-			if duplicate {
-				lastNode = secondNode
-			} else {
-				lastNode = firstNode
-			}
-			break
-		}
-		duplicate = true
-		firstNode = secondNode
-		secondNode = firstNode.Next
-	}
-	head = lastNode
+
+	var tempHeadNode *ListNode
+	var tempNode *ListNode
 
 	for {
-		if secondNode == nil {
-			break
+		if tempNode != nil {
+			tempNode.Next = getFirstNode(tempNode.Next)
+			if tempNode.Next == nil {
+				break
+			}
+			tempNode = tempNode.Next
 		}
-		if firstNode.Val != secondNode.Val {
-			lastNode = firstNode
-			firstNode = secondNode
-			secondNode = firstNode.Next
-			continue
-		}
-		for {
-			if secondNode == nil {
+
+		if tempHeadNode == nil {
+			tempHeadNode = getFirstNode(head)
+			if tempHeadNode == nil {
 				break
 			}
-			firstNode = secondNode
-			secondNode = firstNode.Next
-			if secondNode == nil {
-				lastNode.Next = nil
-				break
-			}
-			if firstNode.Val == secondNode.Val {
-				firstNode = secondNode
-				secondNode = firstNode.Next
-				continue
-			}
-			if secondNode.Next == nil {
-				lastNode.Next = secondNode
-				break
-			}
-			firstNode = secondNode
-			secondNode = firstNode.Next
+			tempNode = tempHeadNode
 		}
 	}
+	head = tempHeadNode
 	return head
+}
+
+func getFirstNode(node *ListNode) *ListNode {
+	var currentNode *ListNode = node
+	if currentNode == nil {
+		return nil
+	}
+	var duplicate = false
+	for {
+		if currentNode.Next != nil {
+			if currentNode.Next.Val == currentNode.Val {
+				duplicate = true
+				currentNode = currentNode.Next
+				continue
+			}
+
+			if !duplicate {
+				break
+			}
+
+			if currentNode.Next.Next == nil {
+				duplicate = false
+				currentNode = currentNode.Next
+				break
+			}
+
+			if currentNode.Next.Next != nil {
+				if currentNode.Next.Next.Val != currentNode.Next.Val {
+					duplicate = false
+					currentNode = currentNode.Next
+					break
+				}
+				currentNode = currentNode.Next.Next
+			}
+		} else {
+			break
+		}
+	}
+	if !duplicate {
+		return currentNode
+	}
+	return nil
 }
