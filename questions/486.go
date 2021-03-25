@@ -56,6 +56,8 @@ func PredictTheWinner(nums []int) bool {
 	}
 
 	length := len(nums)
+	// mat 为在数组的 i,j 范围内，先手比后手拿多的分数
+	// 最后，mat[0][length-1], 即为在 数组的 0, length-1 范围内， 先手比后手多拿的分数
 	mat := make([][]int, length)
 	for i := 0; i < len(nums); i++ {
 		mat[i] = make([]int, length)
